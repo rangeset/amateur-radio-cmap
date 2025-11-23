@@ -14,14 +14,14 @@
 
 现在我们将过点$ P_0 $ 与 $ S_0 $ 相切 且z轴正半轴相交的线作为我们绘图的y轴
 
-设 $$ \theta_p, \varphi_p $$作为参考参数
+设 $ \theta_p, \varphi_p $ 分别作为 $ C $ 上点的纬度和经度
 
 容易得到
 
 $$
-r = \sqrt{sin^2(\theta_p) + sin^2(\varphi_p)} \\
-\rho = arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)}) \\
-\theta = arctan(\frac{sin(\varphi_p)}{sin(\theta_p)})
+r = \sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)} \\
+\rho = arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)}) \\
+\theta = arctan(\frac{sin(\varphi_p - \varphi_0)}{sin(\theta_p - \theta_0)})
 $$
 
 代入求解
@@ -29,11 +29,11 @@ $$
 $$
 \begin{aligned}
 x &= \rho \cdot cos(\theta) \\
-&= arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)}) \cdot cos(arctan(\frac{sin(\varphi_p)}{sin(\theta_p)})) \\
-&= \frac{arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)})}{\sqrt{1+(\frac{sin(\varphi_p)}{sin(\theta_p)})^2}} \\
-&= \frac{arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)})}{\sqrt{sin(\varphi_p)^2 + sin(\theta_p)^2}} \cdot sin(\theta_p) \\
-&= \rho \cdot sin(\theta) \\
-&= \frac{arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)})}{\sqrt{sin(\varphi_p)^2 + sin(\theta_p)^2}} \cdot sin(\varphi_p) \\
+&= arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)}) \cdot cos(arctan(\frac{sin(\varphi_p - \varphi_0)}{sin(\theta_p - \theta_0)})) \\
+&= \frac{arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)})}{\sqrt{1+(\frac{sin(\varphi_p - \varphi_0)}{sin(\theta_p - \theta_0)})^2}} \\
+&= \frac{arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)})}{\sqrt{sin(\varphi_p - \varphi_0)^2 + sin(\theta_p - \theta_0)^2}} \cdot sin(\theta_p - \theta_0) \\
+&= \rho \cdot sin(\theta - \theta_0) \\
+&= \frac{arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)})}{\sqrt{sin(\varphi_p - \varphi_0)^2 + sin(\theta_p - \theta_0)^2}} \cdot sin(\varphi_p - \varphi_0) \\
 \end{aligned}
 $$
 
@@ -41,7 +41,7 @@ $$
 
 $$
 \begin{cases}
-x = \frac{arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)})}{\sqrt{sin(\varphi_p)^2 + sin(\theta_p)^2}} \cdot sin(\theta_p) \\
-y = \frac{arcsin(\sqrt{sin^2(\theta_p) + sin^2(\varphi_p)})}{\sqrt{sin(\varphi_p)^2 + sin(\theta_p)^2}} \cdot sin(\varphi_p)
+x = \frac{arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)})}{\sqrt{sin(\varphi_p - \varphi_0)^2 + sin(\theta_p - \theta_0)^2}} \cdot sin(\theta_p - \theta_0) \\
+y = \frac{arcsin(\sqrt{sin^2(\theta_p - \theta_0) + sin^2(\varphi_p - \varphi_0)})}{\sqrt{sin(\varphi_p - \varphi_0)^2 + sin(\theta_p - \theta_0)^2}} \cdot sin(\varphi_p - \varphi_0)
 \end{cases}
 $$
