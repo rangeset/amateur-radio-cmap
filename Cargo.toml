@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 imageproc = "0.25.0"
 shapefile = "0.7.0"
+wide = "1.0.2"
