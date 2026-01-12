@@ -39,16 +39,16 @@ pub struct LatlonToAzimnthIsometricCsupport {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn latlon_to_azimnth_isometric_csupport(
+pub extern "C" fn latlon_to_azimuthal_equidistant_csupport(
     lat: f64,
     lat_base: f64,
     lon_delta: f64,
 ) -> LatlonToAzimnthIsometricCsupport {
-    let (x, y, _): (f64, f64, f64) = latlon_to_azimnth_isometric(lat, lon_delta, lat_base);
+    let (x, y, _): (f64, f64, f64) = latlon_to_azimuthal_equidistant(lat, lon_delta, lat_base);
     LatlonToAzimnthIsometricCsupport { x, y }
 }
 
-pub fn latlon_to_azimnth_isometric(lat: f64, lon_delta: f64, lat_base: f64) -> (f64, f64, f64) {
+pub fn latlon_to_azimuthal_equidistant(lat: f64, lon_delta: f64, lat_base: f64) -> (f64, f64, f64) {
     let square = |x: f64| x * x;
     let square_overflow = |x: f64| square(x).clamp(-1f64, 1f64);
     let lat_rad = lat * DEGREE_TO_RADIAN_CONSTANT;
@@ -88,7 +88,7 @@ impl Point {
     }
 }
 
-fn latlon_to_azimnth_isometric_array(
+fn latlon_to_azimuthal_equidistant_array(
     points: Vec<Point>,
     lat_base: f64,
     lon_base: f64,
@@ -99,7 +99,7 @@ fn latlon_to_azimnth_isometric_array(
         .map(|chunk| {
             chunk
                 .iter()
-                .map(|point| latlon_to_azimnth_isometric(point.y, point.x - lon_base, lat_base))
+                .map(|point| latlon_to_azimuthal_equidistant(point.y, point.x - lon_base, lat_base))
                 .fold(
                     (
                         Vec::with_capacity(chunk.len()),
@@ -174,7 +174,7 @@ fn latlon_to_azimnth_isometric_array(
             let t_y = (point.y - last_point.y) / ((k_cache + 1) as f64);
             let last_lon_delta = last_point.x - lon_base;
             for i in 1..k_cache {
-                let (x_add, y_add, _) = latlon_to_azimnth_isometric(
+                let (x_add, y_add, _) = latlon_to_azimuthal_equidistant(
                     last_point.y + (t_y * i as f64),
                     last_lon_delta + (t_x * i as f64),
                     lat_base,
@@ -195,7 +195,7 @@ fn latlon_to_azimnth_isometric_array(
         let t_y = (point.y - last_point.y) / ((k_cache + 1) as f64);
         let last_lon_delta = last_point.x - lon_base;
         for i in 1..k_cache {
-            let (x_add, y_add, _) = latlon_to_azimnth_isometric(
+            let (x_add, y_add, _) = latlon_to_azimuthal_equidistant(
                 last_point.y + (t_y * i as f64),
                 last_lon_delta + (t_x * i as f64),
                 lat_base,
@@ -476,7 +476,7 @@ fn shapefile_draw_point<T: HasXY>(
     point: T,
     r: i32,
 ) {
-    let (x, y, _) = latlon_to_azimnth_isometric(point.y(), point.x() - base_lon, base_lat);
+    let (x, y, _) = latlon_to_azimuthal_equidistant(point.y(), point.x() - base_lon, base_lat);
     let x = (x * ltc).round() as i32 + r;
     let y = (y * ltc).round() as i32 + r;
     draw_filled_circle_mut(img, (x, y), width, get_color_rgba(color));
@@ -493,7 +493,7 @@ fn shapefile_draw_multipoint<T: HasXY>(
     r: i32,
 ) {
     let color = get_color_rgba(color_data);
-    let (xs, ys) = latlon_to_azimnth_isometric_array(
+    let (xs, ys) = latlon_to_azimuthal_equidistant_array(
         points.points().into_iter().map(Point::new).collect(),
         base_lat,
         base_lon,
@@ -517,7 +517,7 @@ fn shapefile_draw_polyline<T: HasXY>(
 ) {
     let color = get_color_rgba(color_data);
     for part in lines.parts() {
-        let (xs, ys) = latlon_to_azimnth_isometric_array(
+        let (xs, ys) = latlon_to_azimuthal_equidistant_array(
             part.into_iter().map(Point::new).collect(),
             base_lat,
             base_lon,
@@ -552,7 +552,7 @@ fn shapefile_draw_polygon<T: HasXY>(
     let mut img_out: GrayImage = GrayImage::new(size, size);
     let mut img_in: GrayImage = GrayImage::new(size, size);
     for ring in polygon.rings() {
-        let (xs, ys) = latlon_to_azimnth_isometric_array(
+        let (xs, ys) = latlon_to_azimuthal_equidistant_array(
             ring.points().into_iter().map(Point::new).collect(),
             base_lat,
             base_lon,
